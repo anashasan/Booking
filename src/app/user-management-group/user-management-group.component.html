@@ -1,8 +1,9 @@
+
 <nz-layout>
     <nz-sider nzCollapsible [(nzCollapsed)]="isCollapsed" [nzTrigger]="null">
       <div class="logo"></div>
       <ul nz-menu nzTheme="dark" nzMode="inline" [nzInlineCollapsed]="isCollapsed">
-        <li nz-submenu nzTitle="Bookings" nzIcon="user">
+        <li nz-submenu nzTitle="Bookings"   nzIcon="user">
           <ul>
             <!-- <li nz-menu-item>New</li>
             <li nz-menu-item>Bill</li>
@@ -11,10 +12,10 @@
         </li>
           <li nz-submenu nzTitle="User Management" nzIcon="team">
           <ul>
-            <li nz-menu-item (click)="routetoUser()">User</li>
-            <!-- <li nz-menu-item>Group</li>
+            <li (click)="routetoUser()" nz-menu-item >User</li>
+            <li nz-menu-item>Group</li>
 
-            <li nz-menu-item>Role</li> -->
+            <li nz-menu-item>Role</li>
                     </ul>
         </li> 
         <!-- <li nz-menu-item>
@@ -34,11 +35,41 @@
       </nz-header>
       <nz-content>
         <nz-breadcrumb>
+            <button nz-button nzType="primary" (click)="routetoAddUser()">Add</button>
           <!-- <nz-breadcrumb-item>User</nz-breadcrumb-item>
           <nz-breadcrumb-item>Bill</nz-breadcrumb-item> -->
         </nz-breadcrumb>
         <div class="inner-content">
-            <app-calendar-booking></app-calendar-booking>
+           <nz-table
+#rowSelectionTable
+nzShowSizeChanger
+[nzData]="listOfAllData"
+(nzCurrentPageDataChange)="currentPageDataChange($event)"
+>
+<thead>
+  <tr>
+    <th
+      nzShowCheckbox
+      nzShowRowSelection
+      [nzSelections]="listOfSelection"
+      [(nzChecked)]="isAllDisplayDataChecked"
+      [nzIndeterminate]="isIndeterminate"
+      (nzCheckedChange)="checkAll($event)"
+    ></th>
+    <th>Name</th>
+    <th>Age</th>
+    <th>Address</th>
+  </tr>
+</thead>
+<tbody>
+  <tr *ngFor="let data of rowSelectionTable.data">
+    <td nzShowCheckbox [(nzChecked)]="mapOfCheckedId[data.id]" (nzCheckedChange)="refreshStatus()"></td>
+    <td>{{ data.name }}</td>
+    <td>{{ data.age }}</td>
+    <td>{{ data.address }}</td>
+  </tr>
+</tbody>
+</nz-table>
         </div>
       </nz-content>
       <nz-footer>Ant Design ©2019 Implement By Angular</nz-footer>
